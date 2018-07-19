@@ -3,24 +3,20 @@ import random
 from copy import deepcopy
 
 class Matrix:
-    #rows = 0
-    #cols = 0
     def __init__(self, nrows, ncols):
         """Construct a (nrows X ncols) matrix"""
         #self.matrix = nrows*[ncols*[0]]
-        self.matrix = [ [None] * ncols for i in range(nrows) ]
-        for i in range(nrows):
-            for j in range(ncols):
+        self.rows = int(nrows)
+        self.cols = int(ncols)
+        self.matrix = [[None] * self.cols for i in range(self.rows)]
+        for i in range(self.rows):
+            for j in range(self.cols):
                 self.matrix[i][j] = random.randint(0,9)
-                #print(i, j, self.matrix[i][j], end=' ')
-            #print()
-        self.rows = nrows
-        self.cols = ncols
 
     def add(self, m):
-        """return a new Matrix object after summation"""
         if(self.rows != m.rows or self.cols != m.cols):
             print("Matrixs' size should be in the same size")
+            print()
             return None
         else:
             matrix_temp = Matrix(self.rows, self.cols)            
@@ -30,9 +26,10 @@ class Matrix:
             return matrix_temp
 
     def sub(self, m):
-        """return a new Matrix object after substraction"""
         if(self.rows != m.rows or self.cols != m.cols):
             print("Matrixs' size should be in the same size")
+            print()
+            return None
         else:
             matrix_temp = Matrix(self.rows, self.cols)            
             for i in range(self.rows):
@@ -41,9 +38,10 @@ class Matrix:
             return matrix_temp
 
     def mul(self, m):
-        """return a new Matrix object after multiplication"""
         if(self.cols != m.rows):
-            print("You can't multiply the matrixs")
+            print("Invalid action")
+            print()
+            return None
         else:
             matrix_temp = Matrix(self.rows, m.cols)            
             for i in range(self.rows):
@@ -55,7 +53,6 @@ class Matrix:
             return matrix_temp
 
     def transpose(self):
-        """return a new Matrix object after transpose"""
         matrix_temp = Matrix(self.cols, self.rows)
         for i in range(self.cols):
             for j in range(self.rows):
@@ -63,38 +60,42 @@ class Matrix:
         return matrix_temp
     
     def display(self):
-        """Display the content in the matrix"""
         for k in range(self.rows):
             for l in range(self.cols):
                 print('{:^5}'.format(self.matrix[k][l]), end='')
             print()
         print()
 
-print("matrix1:")
-mymatrix = Matrix(9,3)
-mymatrix.display()
-print("matrix2:")
-mymatrix02 = Matrix(9,3)
-mymatrix02.display()
-print("matrix3:matrix1+matrix2")
-mymatrix03 = mymatrix.add(mymatrix02)
-mymatrix03.display()
-print("matrix4:matrix1-matrix2")
-mymatrix04 = mymatrix.sub(mymatrix02)
-mymatrix04.display()
-print("matrix5:")
-mymatrix05 = Matrix(3,4)
-mymatrix05.display()
-print("matrix6:matrix1*matrix5")
-mymatrix06 = mymatrix.mul(mymatrix05)
-mymatrix06.display()
-print("matrix7:transpose of matrix4")
-mymatrix07 = mymatrix04.transpose()
-mymatrix07.display()
+i = input("Enter A matrix's rows:")
+j = input("Enter A matrix's columns:")
+print("Matrix A(", i, ",", j, "):", sep='')
+matrix_a = Matrix(i,j)
+matrix_a.display()
 
-print("matrix1+matrix5:")
-mymatrix.add(mymatrix05)
-print("matrix1-matrix5:")
-mymatrix.sub(mymatrix05)
-print("matrix1*matrix4:")
-mymatrix.mul(mymatrix04)
+i = input("Enter B matrix's rows:")
+j = input("Enter B matrix's columns:")
+print("Matrix B(", i, ",", j, "):", sep='')
+matrix_b = Matrix(i,j)
+matrix_b.display()
+
+print('=' * 10 + 'A + B' + '=' * 10)
+matrix_add = matrix_a.add(matrix_b)
+if(matrix_add):
+    matrix_add.display()
+
+print('=' * 10 + 'A - B' + '=' * 10)
+matrix_sub = matrix_a.sub(matrix_b)
+if(matrix_sub):
+    matrix_sub.display()
+
+print('=' * 10 + 'A * B' + '=' * 10)
+matrix_mul = matrix_a.mul(matrix_b)
+if(matrix_mul):
+    matrix_mul.display()
+
+print('=' * 5 + 'the transpose of A*B' + '=' * 5)
+if(matrix_mul):
+    matrix_transpose = matrix_mul.transpose()
+    matrix_transpose.display()
+else:
+    print('Invalid action')
